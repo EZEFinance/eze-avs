@@ -56,6 +56,7 @@ async function respondToTask(
     const response = await ollama.chat({
       model: "deepseek-r1:1.5b",
       messages: [{ role: "user", content: task.contents }],
+      temperature: 0.5,
     });
 
     let risk = "None";
@@ -93,7 +94,7 @@ async function respondToTask(
 }
 
 async function main() {
-  const contractAddress = "0xC070A317F23E9A4e982e356485416251dd3Ed944";
+  const contractAddress = "0xf4fa0d1C10c47cDe9F65D56c3eC977CbEb13449A";
 
   const account = privateKeyToAccount(
     process.env.OPERATOR_PRIVATE_KEY as `0x${string}`

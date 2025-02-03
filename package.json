@@ -3,5 +3,8 @@
     "dotenv": "^16.4.5",
     "ollama": "^0.5.10",
     "viem": "^2.21.45"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0"
   }
 }

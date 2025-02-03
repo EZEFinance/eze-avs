@@ -32,20 +32,20 @@ contract DeployEZEServiceManager is Script {
 
         // Register
         // Register as an operator
-        // IDelegationManager delegationManager = IDelegationManager(
-        //     DELEGATION_MANAGER
-        // );
+        IDelegationManager delegationManager = IDelegationManager(
+            DELEGATION_MANAGER
+        );
 
-        // IDelegationManager.OperatorDetails
-        //     memory operatorDetails = IDelegationManager.OperatorDetails({
-        //         __deprecated_earningsReceiver: operator,
-        //         delegationApprover: address(0),
-        //         stakerOptOutWindowBlocks: 0
-        //     });
+        IDelegationManager.OperatorDetails
+            memory operatorDetails = IDelegationManager.OperatorDetails({
+                __deprecated_earningsReceiver: operator,
+                delegationApprover: address(0),
+                stakerOptOutWindowBlocks: 0
+            });
 
-        // vm.startBroadcast(operator);
-        // delegationManager.registerAsOperator(operatorDetails, "");
-        // vm.stopBroadcast();
+        vm.startBroadcast(operator);
+        delegationManager.registerAsOperator(operatorDetails, "");
+        vm.stopBroadcast();
 
         // Register operator to AVS
         AVSDirectory avsDirectory = AVSDirectory(AVS_DIRECTORY);
