@@ -42,13 +42,13 @@ $ forge snapshot
 ### Anvil
 
 ```shell
-$ anvil
+$ anvil --chain-id 31337 --fork-url https://
 ```
 
 ### Deploy
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge script script/EZEServiceManager.s.sol --rpc-url http://127.0.0.1:8545 --broadcast
 ```
 
 ### Cast
