@@ -7,7 +7,7 @@ import {IAVSDirectory} from "eigenlayer-contracts/src/contracts/interfaces/IAVSD
 
 import {ECDSA} from "solady/utils/ECDSA.sol";
 
-contract MyServiceManager {
+contract EZEServiceManager {
 
     // Four main function for a working AVS
     // Register Operator
@@ -30,7 +30,7 @@ contract MyServiceManager {
     event TaskResponded(
         uint32 indexed taskIndex,
         Task task,
-        bool isSafe,
+        string risk,
         address operator
     );
 
@@ -91,7 +91,7 @@ contract MyServiceManager {
     function respondToTask(
         Task calldata task,
         uint32 referenceTaskIndex,
-        bool isSafe,
+        string calldata risk,
         bytes memory signature
     ) external onlyOperator {
         // check that the task is valid, hasn't been responsed yet, and is being responded in time
@@ -106,7 +106,7 @@ contract MyServiceManager {
 
         // The message that was signed
         bytes32 messageHash = keccak256(
-            abi.encodePacked(isSafe, task.contents)
+            abi.encodePacked(risk, task.contents)
         );
         bytes32 ethSignedMessageHash = messageHash.toEthSignedMessageHash();
         if (ethSignedMessageHash.recover(signature) != msg.sender) {
@@ -117,6 +117,6 @@ contract MyServiceManager {
         allTaskResponses[msg.sender][referenceTaskIndex] = signature;
 
         // emitting event
-        emit TaskResponded(referenceTaskIndex, task, isSafe, msg.sender);
+        emit TaskResponded(referenceTaskIndex, task, risk, msg.sender);
     }
 }

@@ -23,17 +23,17 @@ type Task = {
 };
 
 const abi = parseAbi([
-  "function respondToTask((string contents, uint32 taskCreatedBlock) task, uint32 referenceTaskIndex, bool isSafe, bytes memory signature) external",
+  "function respondToTask((string contents, uint32 taskCreatedBlock) task, uint32 referenceTaskIndex, string risk, bytes memory signature) external",
   "event NewTaskCreated(uint32 indexed taskIndex, (string contents, uint32 taskCreatedBlock) task)",
 ]);
 
 async function createSignature(
   account: any,
-  isSafe: boolean,
+  risk: string,
   contents: string
 ) {
   const messageHash = keccak256(
-    encodePacked(["bool", "string"], [isSafe, contents])
+    encodePacked(["string", "string"], [risk, contents])
   );
 
   const signature = await account.signMessage({
@@ -52,23 +52,30 @@ async function respondToTask(
   taskIndex: number
 ) {
   try {
+    console.log("Responding to task:")
     const response = await ollama.chat({
-      model: "llama-guard3:1b",
+      model: "deepseek-r1:1.5b",
       messages: [{ role: "user", content: task.contents }],
     });
 
-    let isSafe = true;
-    if (response.message.content.includes("unsafe")) {
-      isSafe = false;
+    let risk = "None";
+    if (response.message.content.includes("low risk")) {
+      risk = "Low Risk Approved Coy💦";
+    } else if (response.message.content.includes("medium risk")) {
+      risk = "Medium Risk Approved Coy💦";
+    } else if (response.message.content.includes("high risk")) {
+      risk = "High Risk Approved Coy💦";
+    } else {
+      risk = "Not in risk";
     }
 
-    const signature = await createSignature(account, isSafe, task.contents);
+    const signature = await createSignature(account, risk, task.contents);
 
     const { request } = await publicClient.simulateContract({
       address: contractAddress,
       abi,
       functionName: "respondToTask",
-      args: [task, taskIndex, isSafe, signature],
+      args: [task, taskIndex, risk, signature],
       account: account.address,
     });
 
@@ -77,7 +84,7 @@ async function respondToTask(
     console.log("Responded to task:", {
       taskIndex,
       task,
-      isSafe,
+      risk,
       transactionHash: hash,
     });
   } catch (error) {
@@ -86,7 +93,7 @@ async function respondToTask(
 }
 
 async function main() {
-  const contractAddress = "0xb60971942E4528A811D24826768Bc91ad1383D21";
+  const contractAddress = "0xC070A317F23E9A4e982e356485416251dd3Ed944";
 
   const account = privateKeyToAccount(
     process.env.OPERATOR_PRIVATE_KEY as `0x${string}`

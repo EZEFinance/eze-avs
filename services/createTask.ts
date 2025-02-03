@@ -17,18 +17,18 @@ const abi = parseAbi([
 ]);
 
 async function main() {
-  const contractAddress = "0x427EE58a6c574032085AEB90Dd05dEea6F054930";
+  const contractAddress = "0xC070A317F23E9A4e982e356485416251dd3Ed944";
 
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
 
   const publicClient = createPublicClient({
     chain: anvil,
-    transport: http("http://localhost:8545"),
+    transport: http("http://127.0.0.1:8545"),
   });
 
   const walletClient = createWalletClient({
     chain: anvil,
-    transport: http("http://localhost:8545"),
+    transport: http("http://127.0.0.1:8545"),
     account,
   });
 
@@ -37,7 +37,16 @@ async function main() {
       address: contractAddress,
       abi,
       functionName: "createNewTask",
-      args: ["I wanna rob a bank!"],
+      args: [
+        "I calssified in low risk or medium risk or high risk, where : " +
+        "I have some experience with DeFi but havent done much staking. " +
+        "I usually stake for mid-term periods, around 1 to 6 months. " +
+        "I prefer the highest rewards, even if they are volatile. " +
+        "I use a mix of well-known and new staking platforms. " +
+        "I avoid unaudited smart contracts but sometimes take risks if the APY is high. " +
+        "If the market fluctuates, I hold my stake but monitor closely. " +
+        "I have a basic understanding of impermanent loss and slashing risks"
+      ],
       account: account.address,
     });
 

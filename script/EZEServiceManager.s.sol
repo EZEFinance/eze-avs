@@ -2,12 +2,12 @@
 pragma solidity ^0.8.26;
 
 import {Script} from "forge-std/Script.sol";
-import {MyServiceManager} from "../src/MyServiceManager.sol";
+import {EZEServiceManager} from "../src/EZEServiceManager.sol";
 import {IDelegationManager} from "eigenlayer-contracts/src/contracts/interfaces/IDelegationManager.sol";
 import {AVSDirectory} from "eigenlayer-contracts/src/contracts/core/AVSDirectory.sol";
 import {ISignatureUtils} from "eigenlayer-contracts/src/contracts/interfaces/ISignatureUtils.sol";
 
-contract DeployMyServiceManager is Script {
+contract DeployEZEServiceManager is Script {
     address internal constant AVS_DIRECTORY =
         0xdAbdB3Cd346B7D5F5779b0B614EdE1CC9DcBA5b7;
     address internal constant DELEGATION_MANAGER =
@@ -15,7 +15,7 @@ contract DeployMyServiceManager is Script {
 
     address internal deployer;
     address internal operator;
-    MyServiceManager serviceManager;
+    EZEServiceManager serviceManager;
 
     function setUp() public virtual {
         deployer = vm.rememberKey(vm.envUint("PRIVATE_KEY"));
@@ -27,25 +27,25 @@ contract DeployMyServiceManager is Script {
     function run() public {
         // Deploy
         vm.startBroadcast(deployer);
-        serviceManager = new MyServiceManager(AVS_DIRECTORY);
+        serviceManager = new EZEServiceManager(AVS_DIRECTORY);
         vm.stopBroadcast();
 
         // Register
         // Register as an operator
-        IDelegationManager delegationManager = IDelegationManager(
-            DELEGATION_MANAGER
-        );
+        // IDelegationManager delegationManager = IDelegationManager(
+        //     DELEGATION_MANAGER
+        // );
 
-        IDelegationManager.OperatorDetails
-            memory operatorDetails = IDelegationManager.OperatorDetails({
-                __deprecated_earningsReceiver: operator,
-                delegationApprover: address(0),
-                stakerOptOutWindowBlocks: 0
-            });
+        // IDelegationManager.OperatorDetails
+        //     memory operatorDetails = IDelegationManager.OperatorDetails({
+        //         __deprecated_earningsReceiver: operator,
+        //         delegationApprover: address(0),
+        //         stakerOptOutWindowBlocks: 0
+        //     });
 
-        vm.startBroadcast(operator);
-        delegationManager.registerAsOperator(operatorDetails, "");
-        vm.stopBroadcast();
+        // vm.startBroadcast(operator);
+        // delegationManager.registerAsOperator(operatorDetails, "");
+        // vm.stopBroadcast();
 
         // Register operator to AVS
         AVSDirectory avsDirectory = AVSDirectory(AVS_DIRECTORY);
