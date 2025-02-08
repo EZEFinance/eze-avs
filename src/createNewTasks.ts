@@ -8,7 +8,7 @@ dotenv.config();
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 /// TODO: Hack
-let chainId = 31337;
+let chainId = 84532;
 
 const avsDeploymentData = JSON.parse(fs.readFileSync(path.resolve(__dirname, `../contracts/deployments/eze-finance/${chainId}.json`), 'utf8'));
 const ezeFinanceServiceManagerAddress = avsDeploymentData.addresses.ezeFinanceServiceManager;
