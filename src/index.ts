@@ -1,7 +1,5 @@
 import { ethers } from "ethers";
 import * as dotenv from "dotenv";
-import axios from "axios";
-import { google } from 'googleapis';
 import { ReclaimClient } from "@reclaimprotocol/zk-fetch";
 import { Reclaim } from "@reclaimprotocol/js-sdk";
 
