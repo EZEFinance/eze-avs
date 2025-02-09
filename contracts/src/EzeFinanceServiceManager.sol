@@ -116,7 +116,7 @@ contract EzeFinanceServiceManager is
         allTaskResponses[msg.sender][referenceTaskIndex] = signature;
 
         // emitting event
-        emit EzeTaskResponded(referenceTaskIndex, task, msg.sender);
+        emit EzeTaskResponded(referenceTaskIndex, task, msg.sender, proof.signedClaim.signatures[0]);
     }
     
 }

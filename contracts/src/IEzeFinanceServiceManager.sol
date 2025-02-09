@@ -6,7 +6,7 @@ import {Reclaim} from "./Reclaim/Reclaim.sol";
 interface IEzeFinanceServiceManager {
     event NewEzeTaskCreated(uint32 indexed taskIndex, EzeTask task);
 
-    event EzeTaskResponded(uint32 indexed taskIndex, EzeTask task, address operator);
+    event EzeTaskResponded(uint32 indexed taskIndex, EzeTask task, address operator, bytes signature);
 
     event Debug(bytes32 storedHash, bytes32 suppliedHash);
 
